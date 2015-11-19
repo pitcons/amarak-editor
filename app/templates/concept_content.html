@@ -1,0 +1,155 @@
+<div class="row">
+   <!-- left column -->
+   <div class="col-md-6">
+      <div class="box box-primary">
+         <div class="box-header with-border">
+            <h3 class="box-title">{{ _('Concept') }}</h3>
+         </div>
+         <form class="form-horizontal">
+           <div class="box-body">
+             <ajax-input label="'{{ _('Name') }}'"
+                         value="conceptUri"
+                         url="cfg.baseUrl + '/schemes/' + scheme + '/concept/' + concept.uri"
+                         method="PUT"
+                         key="uri"></ajax-input>
+
+             <div class="form-group">
+               <div class="col-sm-12">
+                 <button ng-click="delConcept(scheme, conceptUri)" class="btn btn-def-sz btn-danger pull-right">{{ _('Delete concept') }}</button>
+               </div>
+             </div>
+
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12">
+                <table class="table table-striped">
+                  <tbody><tr>
+                    <th>{{ _('Lang') }}</th>
+                    <th>{{ _('Type') }}</th>
+                    <th>{{ _('Label') }}</th>
+                    <th></th>
+                  </tr>
+                  <tr data-ng-repeat="label_tuple in concept.labels">
+                    <td> {{ '{{ label_tuple[0] }}' }} </td>
+                    <td> {{ '{{ label_tuple[1] }}' }} </td>
+                    <td> {{ '{{ label_tuple[2] }}' }} </td>
+                    <td>
+                      <a href="#" onclick="return false;" ng-click="delConceptLabel(conceptUri, label_tuple[0], label_tuple[1], label_tuple[2])">
+                        <span class="glyphicon glyphicon-trash pull-right"></span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+
+                    <tr>
+                      <td>
+                        <select class="form-control" ng-model="newConceptLabel.lang">
+                          <option data-ng-repeat="(lang, desc) in schemes[scheme].langs" value="{{ '{{ lang }}' }}">{{ '{{ lang }}' }}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select class="form-control" ng-model="newConceptLabel.type">
+                          <option data-ng-repeat="(type, desc) in schemes[scheme].concept_label_types" value="{{ '{{ type }}' }}">{{ '{{ type }}' }}</option>
+                        </select>
+                      </td>
+
+                      <td> <input class="form-control" ng-model="newConceptLabel.label" /> </td>
+                      <td><button ng-click="addConceptLabel()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
+                    </tr>
+
+
+                </tbody></table>
+              </div>
+            </div>
+
+         </form>
+      </div>
+      <!-- /.box -->
+   </div>
+   <!--/.col left -->
+
+   <!-- right column -->
+   <div class="col-md-6">
+      <div class="box box-primary">
+         <div class="box-header with-border">
+            <h3 class="box-title">{{ _('Add relation') }}</h3>
+         </div>
+         <form class="form-horizontal">
+           <div class="box-body">
+
+             <div class="form-group">
+               <label class="col-sm-2 control-label">{{ _('Relation') }}</label>
+               <div class="col-sm-10">
+                 <div id="wrapConceptUri" class="input-group-sm">
+                   <select class="form-control ng-pristine ng-valid ng-touched" ng-model="newRelation.relation">
+                     <option ng-repeat="relation in schemes[scheme].relations">{{ '{{ relation }}' }}</option>
+                   </select>
+                 </div>
+               </div>
+             </div>
+
+             <div class="form-group">
+               <label class="col-sm-2 control-label">{{ _('Concept') }}</label>
+               <div class="col-sm-10">
+
+                 <div id="wrapConceptUri" class="input-group-sm">
+                   <!-- uib-typeahead="c['uri'] + ' (' + c['scheme'] + ')' for c in getConcepts(scheme, $viewValue)" -->
+                   <input type="text" ng-model="newRelation.concept"
+                          uib-typeahead="c as c.scheme + ': ' + c.uri for c in getConcepts(scheme, $viewValue)"
+                          typeahead-loading="loadingConcepts" typeahead-no-results="noResults" class="form-control" />
+                 </div>
+               </div>
+             </div>
+
+             <div class="form-group">
+               <div class="col-sm-12">
+                 <button ng-disabled="!newRelation.concept || !newRelation.relation || !isObject(newRelation.concept)" ng-click="addLink()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button>
+               </div>
+             </div>
+
+           </div>
+         </form>
+      </div>
+   </div>
+   <!--/.col right-->
+</div>
+
+<div class="row">
+   <div class="col-xs-12 top-terms">
+     <div class="box">
+       <div class="box-header">
+         <h3 class="box-title">{{ _('Relations') }}</h3>
+         <div class="box-tools">
+           <div class="input-group" style="width: 150px;">
+             <!-- <input type="text" name="table_search" class="form-control input-sm pull-right" placeholder="Search"> -->
+             <!--   <div class="input-group-btn"> -->
+             <!--     <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button> -->
+             <!--   </div> -->
+
+           </div>
+         </div><!-- /.box-header -->
+         <div class="box-body table-responsive no-padding">
+
+           <table class="table table-hover">
+             <tbody><tr>
+               <th>{{ _('Relation') }}</th>
+               <th>{{ _('Concept') }}</th>
+               <th>{{ _('Scheme') }}</th>
+               <th></th>
+             </tr>
+             <tr data-ng-repeat="rel in concept['relations']">
+               <td>{{ '{{ rel.relation.name }}'}}</td>
+               <td><a href="#/schemes/{{ '{{ rel.scheme }}'}}/concept/{{ '{{ rel.concept2.uri }}'}}">{{ '{{ rel.concept2.uri }}'}}</a></td>
+               <td><a href="#/schemes/{{ '{{ rel.scheme }}'}}">{{ '{{ rel.scheme }}'}}</a></td>
+               <td>
+                 <a href="#" onclick="return false;" ng-click="delLink(scheme, 'rutez', rel.relation.name, rel.concept1.scheme, rel.concept1.uri, rel.concept2.scheme, rel.concept2.uri)">
+                   <span class="glyphicon glyphicon-trash pull-right"></span>
+                 </a>
+               </td>
+             </tr>
+           </tbody></table>
+         </div><!-- /.box-body -->
+       </div><!-- /.box -->
+     </div> <!-- /.top-terms -->
+</div>

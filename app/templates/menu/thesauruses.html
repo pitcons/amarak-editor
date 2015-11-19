@@ -1,0 +1,6 @@
+<h2>Тезаурусы</h2>
+{% for name, thesaurus in thesauruses.items() %}
+<div class="row center-block">
+    <a href="/thesaurus/{{ thesaurus.name }}">{{ thesaurus.title }}</a>
+</div>
+{% endfor %}

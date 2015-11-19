@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">{{ _('Search concepts by label') }}</h3>
+      </div><!-- /.box-header -->
+
+      <div class="col-sm-6"></div>
+      <div class="col-sm-6">
+        <div class="input-group input-group-sm">
+          <input ng-enter="searchConcepts()" type="text" class="form-control" ng-model="search">
+            <span class="input-group-btn">
+              <button id="search-loading" class="btn btn-info btn-flat disabled ng-hide is-refresh" type="button"><span class="fa fa-refresh fa-spin"></span></button>
+              <button ng-click="searchConcepts()" class="btn btn-info btn-flat" type="button">search</button>
+            </span>
+          </div>
+
+      </div>
+
+      <div class="box-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>{{ _('Concept') }}</th>
+              <th>{{ _('Label lang') }}</th>
+              <th>{{ _('Label type') }}</th>
+              <th>{{ _('Label') }}</th>
+              <th>{{ _('Scheme') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-ng-repeat="concept in searchResult['concepts']">
+              <td><a href="/#/schemes/{{ '{{ scheme }}' }}/concept/{{ '{{ concept.uri }}' }}">{{ '{{ concept.uri }}' }}</a></td>
+              <td>{{ '{{ concept.label.lang }}'}}</td>
+              <td>{{ '{{ concept.label.type }}'}}</td>
+              <td>{{ '{{ concept.label.label }}'}}</td>
+              <td>
+                <a href="#/schemes/{{ '{{ concept.scheme }}'}}">{{ '{{ concept.scheme }}' }}</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div><!-- /.box-body -->
+    </div><!-- /.box -->
+
+  </div><!-- /.col -->
+</div><!-- /.row -->

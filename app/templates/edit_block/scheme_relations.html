@@ -1,0 +1,39 @@
+<script type="text/ng-template" id="inlineEditTemplate.html">
+  Content of template1.html
+</script>
+
+
+<div class="row">
+  <div class="col-xs-12 top-terms">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">{{ _('Scheme relations') }}</h3>
+      </div>
+
+      <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+          <tbody>
+            <tr>
+              <th>{{ _('Id') }}</th>
+              <th>{{ _('Name') }}</th>
+              <th>{{ _('Scheme') }}</th>
+            </tr>
+            <tr data-ng-repeat="relation in schemes[scheme].relations">
+              <td>{{ '{{ relation.id }}' }}</td>
+              <td>
+                <!-- <div class="input-group-sm"> -->
+                <!--   <div ng-controller="inlineEditController" ng-init="init(relation.id)">{{ '{{ content }}' }}</div> -->
+                <!-- </div> -->
+
+                <ajax-input />
+                <div ng-include="inlineEditTemplate.html"></div>
+
+              </td>
+              <td><a href="#/schemes/{{ '{{ relation.scheme }}'}}">{{ '{{ relation.scheme }}' }}</a></td>
+            </tr>
+        </tbody></table>
+      </div><!-- /.box-body -->
+
+    </div>
+  </div>
+</div>

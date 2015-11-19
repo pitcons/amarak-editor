@@ -1,0 +1,180 @@
+<div class="row">
+  <!-- left column -->
+  <div class="col-md-6">
+    <!-- general form elements -->
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{ _('Scheme') }}</h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form class="form-horizontal">
+        <div class="box-body">
+
+          <ajax-input label="'{{ _('Uri') }}'"
+                      value="schemes[scheme].uri"
+                      url="cfg.baseUrl + '/schemes/' + scheme"
+                      method="PUT"
+                      key="uri"
+                      /></ajax-input>
+
+          <ajax-input label="'{{ _('Prefix') }}'"
+                      value="schemes[scheme].prefix"
+                      url="cfg.baseUrl + '/schemes/' + scheme"
+                      method="PUT"
+                      key="prefix"
+                      /></ajax-input>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <button ng-click="delScheme()" class="btn btn-def-sz btn-danger pull-right">{{ _('Delete scheme') }}</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <table class="table table-striped">
+                <tbody><tr>
+                  <th>{{ _('Lang') }}</th>
+                  <th>{{ _('Label') }}</th>
+                  <th></th>
+                </tr>
+                <tr data-ng-repeat="(lang, label) in schemes[scheme].labels">
+                  <td> {{ '{{ lang }}' }} </td>
+                  <td> {{ '{{ label }}' }} </td>
+                  <td>
+                    <!-- <a href="#" onclick="return false;"> -->
+                    <!--   <span class="glyphicon glyphicon-trash pull-right"></span> -->
+                    <!-- </a> -->
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <select class="form-control" ng-model="newSchemeLabelLang" >
+                      <option data-ng-repeat="(lang, desc) in schemes[scheme].langs" value="{{ '{{ lang }}' }}">{{ '{{ lang }}' }}</option>
+                    </select>
+                  </td>
+                  <td> <input ng-enter="addSchemeLabel()" class="form-control" ng-model="newSchemeLabel" /> </td>
+                  <td><button ng-click="addSchemeLabel()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
+                </tr>
+
+              </tbody></table>
+            </div>
+          </div>
+        </div><!-- /.box-body -->
+      </form>
+    </div>
+    <!-- /.box -->
+  </div>
+  <!--/.col (right) -->
+
+
+  <!-- left column -->
+  <div class="col-md-6">
+    <!-- general form elements -->
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{ _('Hierarhy') }}</h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form role="form">
+        <div class="box-body">
+
+          <table class="table table-striped">
+            <tbody><tr>
+              <th>{{ _('Title') }}</th>
+              <th>{{ _('Name') }}</th>
+              <th></th>
+            </tr>
+
+            <tr data-ng-repeat="p in schemes[scheme].parents">
+              <td> {{ '{{ p }}' }} </td>
+              <td></td>
+              <td>
+                <a href="#" onclick="return false" ng-click="delHierarhy(p)" >
+                  <span class="glyphicon glyphicon-trash pull-right"></span>
+                </a>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <select class="form-control" ng-model="newHierarhyPreifix">
+                  <option data-ng-repeat="sh in schemes" value="{{ '{{ sh.prefix }}' }}">{{ '{{ sh.uri }}' }}</option>
+                </select>
+              </td>
+              <td></td>
+              <td><button ng-click="addHierarhy()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
+            </tr>
+          </tbody></table>
+
+
+        </div>
+      </form>
+    </div>
+    <!-- /.box -->
+
+    <!-- export -->
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{ _('Export') }}</h3>
+      </div>
+      <div class="box-body">
+        <div class="col-sm-8">
+          <select class="form-control" ng-model="exportFormat">
+            <option>RDF</option>
+          </select>
+        </div>
+        <div class="col-sm-4">
+          <button ng-click="exportScheme(scheme, exportFormat)" class="btn btn-def-sz btn-primary pull-right">{{ _('Export') }}</button>
+        </div>
+      </div>
+    </div>
+    <!-- /export -->
+
+    <!-- concepts -->
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{ _('Concepts') }}</h3>
+      </div>
+      <div class="box-body">
+        <button ng-click="newConcept(scheme)" class="btn btn-def-sz btn-primary pull-right">{{ _('Add concept') }}</button>
+      </div>
+    </div>
+    <!-- /concepts -->
+
+
+  </div>
+  <!--/.col (right) -->
+</div>
+{# {% include 'edit_block/scheme_relations.html'%} #}
+<div class="row">
+  <div class="col-xs-12 top-terms">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">{{ _('Top concepts') }}</h3>
+        <div class="box-tools">
+          <div class="input-group" style="width: 150px;">
+            <!-- <input type="text" name="table_search" class="form-control input-sm pull-right" placeholder="Search"> -->
+            <!--   <div class="input-group-btn"> -->
+            <!--     <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button> -->
+            <!--   </div> -->
+          </div>
+        </div><!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <th>{{ _('Concept') }}</th>
+                <th>{{ _('Scheme') }}</th>
+              </tr>
+            <tr data-ng-repeat="concept in topConcepts track by $index">
+              <td><a href="#/schemes/{{ '{{ concept.scheme }}'}}/concept/{{ '{{ concept.uri }}'}}">{{ '{{ concept.uri }}' }}</a></td>
+              <td><a href="#/schemes/{{ '{{ concept.scheme }}'}}">{{ '{{ concept.scheme }}' }}</a></td>
+            </tr>
+          </tbody></table>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+    </div> <!-- /.top-terms -->
+  </div>

@@ -1,0 +1,37 @@
+.row div {
+}
+
+.header div {
+  height: 100px;
+}
+
+
+.green {
+  background: green;
+}
+
+.blue {
+  background: #85ADAD;
+}
+
+.gray {
+  background: gray;
+}
+
+.h1-pencil {
+  font-size: 12px;
+  position: relative;
+  margin-top: -50px;
+}
+
+.menu {
+    background: #F2F2F2;
+}
+
+.btn-def-sz {
+    min-width: 100px;
+}
+
+a span.glyphicon-trash {
+    color: black;
+}

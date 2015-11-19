@@ -1,0 +1,107 @@
+<div class="row">
+   <!-- left column -->
+   <div class="col-md-6">
+      <!-- general form elements -->
+      <div class="box box-primary">
+         <div class="box-header with-border">
+            <h3 class="box-title">{{ _('Main') }}</h3>
+         </div>
+         <!-- /.box-header -->
+         <!-- form start -->
+         <form role="form">
+           <div class="box-body">
+               <div class="form-group">
+                  <label for="thesaurus_name">{{ _('Name') }}</label>
+                  <input type="" class="form-control" id="thesaurus_name" ng-model="thesaurus.name"
+                         placeholder="{{ _('Enter the thesaurus name')}}">
+               </div>
+               <div class="form-group">
+                  <label for="thesaurus_title">{{ _('Title') }}</label>
+                  <input type="" class="form-control" id="thesaurus_title" ng-model="thesaurus.title"
+                         placeholder="{{ _('Enter thesaurus title')}}">
+               </div>
+
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button ng-click="submitThesaurus()" type="submit" class="btn btn-primary btn-def-sz ">{{ _('Submit') }}</button>
+              <button ng-click="resetThesaururs()" class="btn btn-warning btn-def-sz pull-right">{{ _('Reset') }}</button>
+            </div>
+         </form>
+      </div>
+      <!-- /.box -->
+   </div>
+   <!--/.col (right) -->
+
+
+      <!-- left column -->
+   <div class="col-md-6">
+      <!-- general form elements -->
+      <div class="box box-primary">
+         <div class="box-header with-border">
+           <h3 class="box-title">{{ _('Hierarhy') }}</h3>
+         </div>
+         <!-- /.box-header -->
+         <!-- form start -->
+         <form role="form">
+           <div class="box-body">
+
+              <table class="table table-striped">
+                    <tbody><tr>
+                      <th>{{ _('Title') }}</th>
+                      <th>{{ _('Name') }}</th>
+                      <th></th>
+                    </tr>
+
+                    <tr data-ng-repeat="p in parents">
+                      <td> {{ '{{ p }}' }} </td>
+                      <td>  </td>
+                      <th><button data-name="{{ '{{ p }}'}}" ng-click="delHierarhy($event)" class="btn btn-def-sz btn-danger pull-right">{{ _('Delete') }}</button></th>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <select class="form-control" ng-model="hierarhy.new">
+                          <option data-ng-repeat="th in thesauruses" value="{{ '{{ th.name }}' }}">{{ '{{ th.title }}' }}</option>
+                        </select>
+                      </td>
+                      <td></td>
+                      <td><button ng-click="addHierarhy()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
+                    </tr>
+               </tbody></table>
+
+
+            </div>
+         </form>
+      </div>
+      <!-- /.box -->
+   </div>
+   <!--/.col (right) -->
+</div>
+<div class="row">
+   <div class="col-xs-12 top-terms">
+     <div class="box">
+       <div class="box-header">
+         <h3 class="box-title">{{ _('Top terms') }}</h3>
+         <div class="box-tools">
+           <div class="input-group" style="width: 150px;">
+             <!-- <input type="text" name="table_search" class="form-control input-sm pull-right" placeholder="Search"> -->
+             <!--   <div class="input-group-btn"> -->
+             <!--     <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button> -->
+             <!--   </div> -->
+           </div>
+         </div><!-- /.box-header -->
+         <div class="box-body table-responsive no-padding">
+           <table class="table table-hover">
+             <tbody><tr>
+               <th>{{ _('Term') }}</th>
+             </tr>
+
+             <tr data-ng-repeat="term in topTerms track by $index">
+               <td><a href="#/thesaurus/{{ '{{ openedThesaurus }}'}}/term/{{ '{{ term }}'}}">{{ '{{ term }}' }}</a></td>
+             </tr>
+           </tbody></table>
+         </div><!-- /.box-body -->
+       </div><!-- /.box -->
+     </div> <!-- /.top-terms -->
+</div>

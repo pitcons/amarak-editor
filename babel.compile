@@ -1,0 +1,4 @@
+
+# mk new translation
+# pybabel init -i messages.pot -d app/translations -l ru
+pybabel compile -d app/translations
