@@ -1,26 +1,28 @@
 app.directive('ajaxInput', function($http, $timeout) {
     function link(scope, element, attrs) {
-        console.log('link');
-        scope.currentValue = scope.value;
-        console.log(scope.label + ' value ' + scope.value);
-        scope.$watch('currentValue + model', function() {
-            if (scope.currentValue === scope.value) {
-                $(element).find('.is-buttons').addClass('ng-hide');
-                $(element).find('.wrap').removeClass('input-group');
-            } else {
-                $(element).find('.is-buttons').removeClass('ng-hide');
-                $(element).find('.is-buttons').find('.is-update').removeClass('ng-hide');
-                $(element).find('.is-buttons').find('.is-reset').removeClass('ng-hide');
-
-                $(element).find('.wrap').addClass('input-group');
+        scope.$watch('value', function(value){
+            if(value){
+                scope.origValue = value;
+                scope.currentValue = value;
             }
         });
-        scope.send = function() {
-            if (scope.currentValue !== scope.value) {
-                //$(element).find('.is-refresh').removeClass('ng-hide');
-                //$(element).find('.is-update').addClass('ng-hide');
-                //$(element).find('.is-reset').addClass('ng-hide');
 
+        scope.$watch('currentValue', function() {
+            var el = $(element);
+            if (scope.currentValue === scope.origValue) {
+                el.find('.is-buttons').addClass('ng-hide');
+                el.find('.wrap').removeClass('input-group');
+            } else {
+                el.find('.is-buttons').removeClass('ng-hide');
+                el.find('.is-buttons').find('.is-update').removeClass('ng-hide');
+                el.find('.is-buttons').find('.is-reset').removeClass('ng-hide');
+
+                el.find('.wrap').addClass('input-group');
+            }
+        });
+
+        scope.send = function() {
+            if (scope.currentValue !== scope.origValue) {
                 var data = {};
                 data[scope.key] = scope.currentValue;
 
@@ -38,13 +40,13 @@ app.directive('ajaxInput', function($http, $timeout) {
                         $(element).find('.wrap').removeClass('input-group');
                     }, 1000); // TODO place for optimization ;)
 
-                    scope.model = scope.currentValue;
                     scope.value = scope.currentValue;
                 }).error(function(data, status, headers, config) {
                     console.log(scope.url + ' returned status ' + status);
                 });
             }
         };
+
     };
 
     return {
@@ -55,7 +57,7 @@ app.directive('ajaxInput', function($http, $timeout) {
             method: '@',
             key: '@',
             label: '=',
-            value: '=',
+            value: '=?',
         },
         replace: true,
         templateUrl: "/static/templates/ajax_input.html"

@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="callout callout-danger" ng-repeat="error in errors">
+      {{ '{{ error.message }}' }}: <br />
+      {{ '{{ error.tripplet[0] }}' }},
+      {{ '{{ error.tripplet[1] }}' }},
+      {{ '{{ error.tripplet[2] }}' }}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- left column -->
+   <div class="col-md-12">
+      <div class="box box-primary">
+         <div class="box-header with-border">
+            <h3 class="box-title">{{ _('Import scheme') }}</h3>
+         </div>
+         <!-- action="/do_import" method="POST" -->
+         <form name="importForm" >
+           <div class="box-body">
+
+             <!-- <table>
+             <tr ng-repeat="error in errors">
+             <td>
+             {{ '{{ error.message }}' }}
+             </td>
+             <td>
+             {{ '{{ error.tripplet[0] }}' }}
+             </td>
+             <td>
+             {{ '{{ error.tripplet[1] }}' }}
+             </td>
+             <td>
+             {{ '{{ error.tripplet[2] }}' }}
+             </td>
+             </tr>
+             </table> -->
+
+             <div class="form-group">
+
+               <label for="fileForImport">{{ _('File with scheme') }}</label>
+               <input type="file" id="fileForImport" name="fileForImport" file-model="fileForImport.file" />
+
+               <!--
+               <input type="file" id="fileForImport" name="fileForImport" ng-model="fileForImportV" file-model="fileForImport" valid-file required />
+               -->
+               <!-- <p class="help-block">{{ _('Example block-level help text here.') }}</p> -->
+             </div>
+           </div>
+           <div class="box-footer">
+             <!-- ng-click="startImport()" -->
+             <button ng-click="startImport()" ng-disabled="importForm.fileForImport.$error.validFile"  class="btn btn-primary">{{ _('Start import') }}</button>
+           </div>
+         </form>
+      </div>
+
+   </div>
+   <!--/.col left -->
+
+</div>

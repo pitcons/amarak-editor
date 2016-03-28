@@ -4,20 +4,20 @@ app.controller('schemeController', function($scope, $rootScope, $http, $routePar
     $scope.scope = $scope;
     $scope.scheme = $routeParams['name'];
 
-    $scope.$watch("schemes[scheme].prefix", function(newPrefix, oldPrefix) {
-        console.log('change ' + oldPrefix + ' ' + newPrefix);
-        if (oldPrefix && newPrefix && newPrefix != oldPrefix) {
-            console.log('REDIRECT ' + newPrefix);
-            $location.path('/schemes/' + newPrefix);
-            $scope.scheme = newPrefix;
+    $scope.$watch("schemes[scheme].name", function(newName, oldName) {
+        console.log('change ' + oldName + ' ' + newName);
+        if (oldName && newName && newName != oldName) {
+            console.log('REDIRECT ' + newName);
+            $location.path('/schemes/' + newName);
+            $scope.scheme = newName;
             $scope.loadSchemes().then(function() {
-                $location.path('/schemes/' + newPrefix);
+                $location.path('/schemes/' + newName);
             });
         }
     });
 
     // Обновлние языка по-умолчанию для добавления label в схему
-    $scope.$watch("schemes[scheme].langs", function(newPrefix, oldPrefix){
+    $scope.$watch("schemes[scheme].langs", function(newName, oldName){
         if (!$scope.newSchemeLabelLang && $scope.scheme && $scope.schemes && $scope.schemes[$scope.scheme]) {
             $scope.newSchemeLabelLang = $scope.firstOfHash($scope.schemes[$scope.scheme].langs);
         }
@@ -53,10 +53,10 @@ app.controller('schemeController', function($scope, $rootScope, $http, $routePar
     }
 
     // удаление иерархии и схемы
-    $scope.delHierarhy = function(prefix) {
+    $scope.delHierarhy = function(name) {
         $http({
             method: 'DELETE',
-            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/parent/' + prefix
+            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/parent/' + name
         }).success(function(data, status, headers, config) {
             $rootScope.loadSchemes();
         }).error(function(data, status, headers, config) {

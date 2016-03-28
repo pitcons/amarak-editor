@@ -11,19 +11,12 @@
       <form class="form-horizontal">
         <div class="box-body">
 
-          <ajax-input label="'{{ _('Uri') }}'"
-                      value="schemes[scheme].uri"
-                      url="cfg.baseUrl + '/schemes/' + scheme"
-                      method="PUT"
-                      key="uri"
-                      /></ajax-input>
-
-          <ajax-input label="'{{ _('Prefix') }}'"
-                      value="schemes[scheme].prefix"
-                      url="cfg.baseUrl + '/schemes/' + scheme"
-                      method="PUT"
-                      key="prefix"
-                      /></ajax-input>
+          <ajax-input label="'{{ _('Name') }}'"
+          value="schemes[scheme].name"
+          url="cfg.baseUrl + '/schemes/' + scheme"
+          method="PUT"
+          key="name"
+          /></ajax-input>
 
           <div class="form-group">
             <div class="col-sm-12">
@@ -58,7 +51,7 @@
                   <td><button ng-click="addSchemeLabel()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
                 </tr>
 
-              </tbody></table>
+                </tbody></table>
             </div>
           </div>
         </div><!-- /.box-body -->
@@ -68,6 +61,35 @@
   </div>
   <!--/.col (right) -->
 
+  <!-- left column -->
+  <div class="col-md-6">
+    <!-- general form elements -->
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{ _('Namespace') }}</h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form role="form" class="form-horizontal">
+        <div class="box-body">
+
+          <ajax-input label="'{{ _('prefix') }}'"
+          value="schemes[scheme].ns_prefix"
+          url="cfg.baseUrl + '/schemes/' + scheme"
+          method="PUT"
+          key="ns_prefix"/></ajax-input>
+
+          <ajax-input label="'{{ _('URL') }}'"
+          value="schemes[scheme].ns_url"
+          url="cfg.baseUrl + '/schemes/' + scheme"
+          method="PUT"
+          key="ns_url"/></ajax-input>
+
+        </div>
+      </form>
+    </div>
+    <!-- /.box -->
+  </div>
 
   <!-- left column -->
   <div class="col-md-6">
@@ -83,8 +105,7 @@
 
           <table class="table table-striped">
             <tbody><tr>
-              <th>{{ _('Title') }}</th>
-              <th>{{ _('Name') }}</th>
+              <th>{{ _('Url') }}</th>
               <th></th>
             </tr>
 
@@ -101,13 +122,12 @@
             <tr>
               <td>
                 <select class="form-control" ng-model="newHierarhyPreifix">
-                  <option data-ng-repeat="sh in schemes" value="{{ '{{ sh.prefix }}' }}">{{ '{{ sh.uri }}' }}</option>
+                  <option data-ng-repeat="sh in schemes" value="{{ '{{ sh.name }}' }}">{{ '{{ sh.uri }}' }}</option>
                 </select>
               </td>
-              <td></td>
               <td><button ng-click="addHierarhy()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
             </tr>
-          </tbody></table>
+            </tbody></table>
 
 
         </div>
@@ -115,6 +135,11 @@
     </div>
     <!-- /.box -->
 
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-md-6">
     <!-- export -->
     <div class="box box-primary">
       <div class="box-header with-border">
@@ -123,7 +148,7 @@
       <div class="box-body">
         <div class="col-sm-8">
           <select class="form-control" ng-model="exportFormat">
-            <option>RDF</option>
+            <option value="rdf">rdf/turtle</option>
           </select>
         </div>
         <div class="col-sm-4">
@@ -132,7 +157,9 @@
       </div>
     </div>
     <!-- /export -->
+  </div>
 
+  <div class="col-md-6">
     <!-- concepts -->
     <div class="box box-primary">
       <div class="box-header with-border">
@@ -143,10 +170,8 @@
       </div>
     </div>
     <!-- /concepts -->
-
-
   </div>
-  <!--/.col (right) -->
+
 </div>
 {# {% include 'edit_block/scheme_relations.html'%} #}
 <div class="row">
@@ -170,7 +195,7 @@
                 <th>{{ _('Scheme') }}</th>
               </tr>
             <tr data-ng-repeat="concept in topConcepts track by $index">
-              <td><a href="#/schemes/{{ '{{ concept.scheme }}'}}/concept/{{ '{{ concept.uri }}'}}">{{ '{{ concept.uri }}' }}</a></td>
+              <td><a href="#/schemes/{{ '{{ concept.scheme }}'}}/concepts/{{ '{{ concept.name }}'}}">{{ '{{ concept.name }}' }}</a></td>
               <td><a href="#/schemes/{{ '{{ concept.scheme }}'}}">{{ '{{ concept.scheme }}' }}</a></td>
             </tr>
           </tbody></table>

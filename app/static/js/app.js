@@ -41,7 +41,7 @@ app.config(function($routeProvider){
       templateUrl: "/term_content",
       controller: "TermController"
     }
-  ).when("/schemes/:scheme/concept/:concept/",
+  ).when("/schemes/:scheme/concepts/:concept/",
     {
       templateUrl: "/concept_content",
       controller: "conceptController"
@@ -61,7 +61,7 @@ app.config(function($routeProvider){
       templateUrl: "/search",
       controller: "searchController"
     }
-  ).when("/import/:q",
+  ).when("/import/",
     {
       templateUrl: "/import",
       controller: "importController"
@@ -86,7 +86,7 @@ app.run(function($rootScope, $http, $q, $timeout, $location, cfg) {
     $rootScope.loadingIsDone = false;
 
     $rootScope.getSchemeTitle = function(scheme) {
-        return scheme.labels[$rootScope.lang] || scheme.prefix;
+        return scheme.labels[$rootScope.lang] || scheme.name;
     }
 
     $rootScope.update = function(scope, url, data, destModel, sourceModel, idWrap) {
@@ -118,7 +118,10 @@ app.run(function($rootScope, $http, $q, $timeout, $location, cfg) {
         return $http({
             url: cfg.baseUrl + '/schemes/'
         }).success(function(data, status, headers, config) {
-            $rootScope.schemes = data;
+            $rootScope.schemes = {};
+            angular.forEach(data.schemes, function(value, key) {
+                $rootScope.schemes[value.name] = value;
+            });
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
         });
@@ -207,7 +210,8 @@ app.run(function($rootScope, $http, $q, $timeout, $location, cfg) {
     }
 
     $rootScope.exportScheme = function(scheme, format) {
-        window.open(cfg.baseUrl + '/export/' + scheme + '/' + format, '_blank');
+        // window.open(cfg.baseUrl + '/export/' + scheme + '/' + format, '_blank');
+        window.open('/do_export/' + scheme + '/' + format, '_blank');
     }
 
     $rootScope.loadSchemes();

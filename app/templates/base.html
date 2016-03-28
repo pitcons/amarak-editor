@@ -261,7 +261,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <a href="#"><i class="fa fa-link"></i> <span>{{ _('Schemes') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
                 <li data-ng-repeat="scheme in schemes">
-                  <a href="#/schemes/{{ '{{ scheme.prefix }}' }}">{{ '{{ getSchemeTitle(scheme) }}' }}</a>
+                  <a href="#/schemes/{{ '{{ scheme.name }}' }}">{{ '{{ getSchemeTitle(scheme) }}' }}</a>
                 </li>
                 <li><a onclick="return false" ng-click="newScheme()" href="#"><i class="fa glyphicon-plus"></i>{{ _('Add new') }}</a></li>
 
@@ -269,7 +269,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </li>
 
             <li class=""><a href="#/import/"><i class="fa fa-link"></i> <span>{{ _('import') }}</span></a></li>
-            <li class=""><a href="#/export/"><i class="fa fa-link"></i> <span>{{ _('export') }}</span></a></li>
 
             <!-- <li><a href="#"><i class="fa fa-link"></i> <span>Search</span></a></li> -->
 
@@ -392,10 +391,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="/static/js/app.js"></script>
     <!-- <script src="/static/js/services/scheme_service.js"></script>a -->
     <script src="/static/js/directives/ajax_input.js"></script>
-    <script src="/static/js/base_controller.js"></script>
-    <script src="/static/js/scheme.js"></script>
-    <script src="/static/js/concept.js"></script>
-    <script src="/static/js/search.js"></script>
+    <script src="/static/js/directives/valid_file.js"></script>
+    <script src="/static/js/directives/file_model.js"></script>
+    <script src="/static/js/services/multipart_form.js"></script>
+    <script src="/static/js/controllers/base_controller.js"></script>
+    <script src="/static/js/controllers/scheme.js"></script>
+    <script src="/static/js/controllers/concept.js"></script>
+    <script src="/static/js/controllers/search.js"></script>
+    <script src="/static/js/controllers/import.js"></script>
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
          Both of these plugins are recommended to enhance the

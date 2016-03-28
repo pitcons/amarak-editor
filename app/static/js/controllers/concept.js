@@ -1,7 +1,8 @@
 app.controller('conceptController', function($scope, $rootScope, $http, $routeParams, $location, cfg) {
     $scope.scope = $scope;
+    $scope.cfg = cfg;
     $scope.scheme = $routeParams['scheme'];
-    $scope.conceptUri = $routeParams['concept'];
+    $scope.conceptName = $routeParams['concept'];
     $scope.newConcept = {
         'relation': 'ВЫШЕ'
     }
@@ -15,10 +16,10 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
     $scope.addConceptLabel = function() {
         $http({
             method: 'PUT',
-            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/concepts/' + $scope.conceptUri +
+            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/concepts/' + $scope.conceptName +
                 '/label/' + $scope.newConceptLabel.lang + '/' + $scope.newConceptLabel.type + '/' + $scope.newConceptLabel.label,
         }).success(function(data, status, headers, config) {
-            $rootScope.loadConcept($scope.scheme, $scope.conceptUri);
+            $rootScope.loadConcept($scope.scheme, $scope.conceptName);
             $scope.newConceptLabel.label = '';
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
@@ -32,7 +33,7 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
             url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/concepts/' + concept_uri +
                 '/label/' + lang + '/' + type + '/' + label,
         }).success(function(data, status, headers, config) {
-            $rootScope.loadConcept($scope.scheme, $scope.conceptUri);
+            $rootScope.loadConcept($scope.scheme, $scope.conceptName);
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
         });
@@ -47,7 +48,7 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
         });
     };
 
-    $scope.$watch("conceptUri", function(newUri, oldUri){
+    $scope.$watch("conceptName", function(newUri, oldUri){
         if (newUri != oldUri) {
             $location.path('/schemes/' + $scope.scheme + '/concepts/' + newUri + '/');
         }
@@ -60,10 +61,10 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
             method: 'PUT',
             url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/add/relation' +
                 '/' + 'rutez' + '/' + $scope.newRelation.relation +
-                '/concept1/schemestub/' + $scope.conceptUri +
+                '/concept1/schemestub/' + $scope.conceptName +
                 '/concept2/' + $scope.newRelation.concept.scheme +'/' + $scope.newRelation.concept.uri
         }).success(function(data, status, headers, config) {
-            $rootScope.loadConcept($scope.scheme, $scope.conceptUri);
+            $rootScope.loadConcept($scope.scheme, $scope.conceptName);
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
         });
@@ -77,7 +78,7 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
                 '/concept1/' + scheme1 + '/' + concept1 +
                 '/concept2/' + scheme2 + '/' + concept2
         }).success(function(data, status, headers, config) {
-            $rootScope.loadConcept($scope.scheme, $scope.conceptUri);
+            $rootScope.loadConcept($scope.scheme, $scope.conceptName);
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
         });
@@ -90,14 +91,14 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
             method: 'DELETE',
             url: cfg.baseUrl + '/link/' + linkId
         }).success(function(data, status, headers, config) {
-            $rootScope.loadConcept($scope.scheme, $scope.conceptUri);
+            $rootScope.loadConcept($scope.scheme, $scope.conceptName);
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
         });
     }
     */
 
-    $rootScope.loadConcept($scope.scheme, $scope.conceptUri);
+    $rootScope.loadConcept($scope.scheme, $scope.conceptName);
 
-    // $scope.defAjaxInput($scope, 'formConceptUri', 'conceptUri', 'wrapConceptUri');
+    // $scope.defAjaxInput($scope, 'formConceptUri', 'conceptName', 'wrapConceptUri');
 });
