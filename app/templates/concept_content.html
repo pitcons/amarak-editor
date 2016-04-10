@@ -17,7 +17,11 @@
 
           <div class="form-group">
             <div class="col-sm-12">
-              <button ng-click="delConcept(scheme, conceptName)" class="btn btn-def-sz btn-danger pull-right">{{ _('Delete concept') }}</button>
+              <button
+                btn-confirm="{{ _('Are you sure wan to delete this concept?') }}"
+                btn-click="conceptsService.remove(schemeId, conceptName)"
+                btn-after="open('scheme', {id: schemeId})"
+                class="btn btn-def-sz btn-danger pull-right">{{ _('Delete concept') }}</button>
             </div>
           </div>
 
@@ -37,7 +41,9 @@
                 <td> {{ '{{ label.type }}' }} </td>
                 <td> {{ '{{ label.literal }}' }} </td>
                 <td>
-                  <a href="#" onclick="return false;" ng-click="delConceptLabel(conceptName, label.lang, label.type, label.literal)">
+                  <a href="#" onclick="return false;"
+                    btn-click="conceptsService.labels.remove(schemeId, conceptName, label.id)"
+                    btn-after="loadConcept(schemeId, conceptName)">
                     <span class="glyphicon glyphicon-trash pull-right"></span>
                   </a>
                 </td>
@@ -56,8 +62,12 @@
                     </select>
                   </td>
 
-                  <td> <input class="form-control" ng-model="newConceptLabel.label" /> </td>
-                  <td><button ng-click="addConceptLabel()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
+                  <td> <input class="form-control" ng-model="newConceptLabel.literal" /> </td>
+                  <td><button
+                    btn-click="conceptsService.labels.add(schemeId, conceptName, newConceptLabel)"
+                    btn-after="loadConcept(schemeId, conceptName)"
+                    class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
+                  <!-- <td><button ng-click="addConceptLabel()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td> -->
                 </tr>
 
 
@@ -96,7 +106,6 @@
             <div class="col-sm-10">
 
               <div id="wrapConceptUri" class="input-group-sm">
-                <!-- uib-typeahead="c['uri'] + ' (' + c['scheme'] + ')' for c in getConcepts(scheme, $viewValue)" -->
                 <input type="text" ng-model="newRelation.concept"
                 uib-typeahead="c as c.scheme + ': ' + c.uri for c in getConcepts(scheme, $viewValue)"
                 typeahead-loading="loadingConcepts" typeahead-no-results="noResults" class="form-control" />

@@ -1,42 +1,16 @@
-app.controller('conceptController', function($scope, $rootScope, $http, $routeParams, $location, cfg) {
+app.controller('conceptController', function($scope, $rootScope, $http, $routeParams, $location, conceptsService, cfg) {
     $scope.scope = $scope;
     $scope.cfg = cfg;
-    $scope.scheme = $routeParams['scheme'];
-    $scope.conceptName = $routeParams['concept'];
+    $scope.scheme = $routeParams['schemeId'];
+    $scope.schemeId = $routeParams['schemeId'];
+    $scope.conceptName = $routeParams['conceptName'];
     $scope.newConcept = {
         'relation': 'ВЫШЕ'
     }
     $scope.newConceptLabel = {
         'lang': 'ru',
         'type': 'altLabel',
-        'label': ''
-    }
-
-    // Добавление label для концепта
-    $scope.addConceptLabel = function() {
-        $http({
-            method: 'PUT',
-            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/concepts/' + $scope.conceptName +
-                '/label/' + $scope.newConceptLabel.lang + '/' + $scope.newConceptLabel.type + '/' + $scope.newConceptLabel.label,
-        }).success(function(data, status, headers, config) {
-            $rootScope.loadConcept($scope.scheme, $scope.conceptName);
-            $scope.newConceptLabel.label = '';
-        }).error(function(data, status, headers, config) {
-            console.log(status + headers);
-        });
-    }
-
-    // Удаление label для концепта
-    $scope.delConceptLabel = function(concept_uri, lang, type, label) {
-        $http({
-            method: 'DELETE',
-            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/concepts/' + concept_uri +
-                '/label/' + lang + '/' + type + '/' + label,
-        }).success(function(data, status, headers, config) {
-            $rootScope.loadConcept($scope.scheme, $scope.conceptName);
-        }).error(function(data, status, headers, config) {
-            console.log(status + headers);
-        });
+        'literal': ''
     }
 
     $scope.getConcepts = function(scheme, uri) {
@@ -55,8 +29,6 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
     });
 
     $scope.addLink = function() {
-        console.log($scope.newRelation);
-        console.log($scope.newRelation.concept);
         $http({
             method: 'PUT',
             url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/add/relation' +
@@ -84,19 +56,7 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
         });
 
     }
-    /*
-    $scope.delLink = function(linkId) {
-        console.log(cfg.baseUrl + '/link/' + linkId);
-        $http({
-            method: 'DELETE',
-            url: cfg.baseUrl + '/link/' + linkId
-        }).success(function(data, status, headers, config) {
-            $rootScope.loadConcept($scope.scheme, $scope.conceptName);
-        }).error(function(data, status, headers, config) {
-            console.log(status + headers);
-        });
-    }
-    */
+
 
     $rootScope.loadConcept($scope.scheme, $scope.conceptName);
 

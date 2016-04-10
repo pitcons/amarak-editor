@@ -260,8 +260,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <li class="treeview active">
               <a href="#"><i class="fa fa-link"></i> <span>{{ _('Schemes') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
-                <li data-ng-repeat="scheme in schemes">
-                  <a href="#/schemes/{{ '{{ scheme.name }}' }}">{{ '{{ getSchemeTitle(scheme) }}' }}</a>
+                <li data-ng-repeat="scheme in schemes|orderBy:'-id'">
+                  <a href="#/schemes/{{ '{{ scheme.id }}' }}">{{ '{{ getSchemeTitle(scheme) }}' }}</a>
                 </li>
                 <li><a onclick="return false" ng-click="newScheme()" href="#"><i class="fa glyphicon-plus"></i>{{ _('Add new') }}</a></li>
 
@@ -388,11 +388,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="/static/AdminLTE/js/app.min.js"></script>
 
-    <script src="/static/js/app.js"></script>
     <!-- <script src="/static/js/services/scheme_service.js"></script>a -->
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/services/reverse_url_service.js"></script>
+    <script src="/static/js/services/schemes_service.js"></script>
+    <script src="/static/js/services/concepts_service.js"></script>
+    <script src="/static/js/config.js"></script>
+    <script src="/static/js/run.js"></script>
+    <script src="/static/js/directives/btn_click.js"></script>
     <script src="/static/js/directives/ajax_input.js"></script>
     <script src="/static/js/directives/valid_file.js"></script>
     <script src="/static/js/directives/file_model.js"></script>
+    <script src="/static/js/directives/first_is_default.js"></script>
     <script src="/static/js/services/multipart_form.js"></script>
     <script src="/static/js/controllers/base_controller.js"></script>
     <script src="/static/js/controllers/scheme.js"></script>

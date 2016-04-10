@@ -69,8 +69,6 @@ app.controller('ThController', function($scope, $rootScope, $http, $routeParams,
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
         });
-
-        console.log($scope.hierarhy.new);
     }
 
     $scope.getTopTerms = function() {

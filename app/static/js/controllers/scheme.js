@@ -1,50 +1,71 @@
-app.controller('schemeController', function($scope, $rootScope, $http, $routeParams, $location, $timeout, cfg) {
+app.controller('schemeController', function($scope, $rootScope, $http, $routeParams, $location, $timeout, cfg, conceptsService, currentScheme) {
     var self = this;
     $scope.cfg = cfg;
     $scope.scope = $scope;
-    $scope.scheme = $routeParams['name'];
+    $scope.schemeId = $routeParams['id'];
+    $scope.currentScheme = currentScheme;
+    $scope.conceptsService = conceptsService;
 
-    $scope.$watch("schemes[scheme].name", function(newName, oldName) {
-        console.log('change ' + oldName + ' ' + newName);
+    $scope.$watch("currentScheme.id", function(newName, oldName) {
+
         if (oldName && newName && newName != oldName) {
-            console.log('REDIRECT ' + newName);
+
+            $rootScope.schemes[newName] = $rootScope.schemes[oldName];
+            $rootScope.schemes[oldName].id = newName;
+            $scope.schemeId = newName;
+            delete $rootScope.schemes[oldName];
+
             $location.path('/schemes/' + newName);
-            $scope.scheme = newName;
-            $scope.loadSchemes().then(function() {
-                $location.path('/schemes/' + newName);
-            });
         }
     });
 
-    // Обновлние языка по-умолчанию для добавления label в схему
-    $scope.$watch("schemes[scheme].langs", function(newName, oldName){
-        if (!$scope.newSchemeLabelLang && $scope.scheme && $scope.schemes && $scope.schemes[$scope.scheme]) {
-            $scope.newSchemeLabelLang = $scope.firstOfHash($scope.schemes[$scope.scheme].langs);
-        }
-    });
+    $scope.addConcept = function() {
+        conceptsService.create($scope.schemeId).then(
+            function(conceptName) {
+                $scope.open('scheme.concept',
+                            {schemeId: $scope.schemeId,
+                             conceptName: conceptName});
+            });
+    }
+
+    $scope.removeConcept = function(schemeId, conceptName) {
+        conceptsService.remove(schemeId, conceptName).then(
+            function(conceptName) {
+                $scope.open('scheme',
+                            {schemeId: $scope.schemeId});
+            });
+    }
+
 
     // Обновление/добавление labels для схем
     $scope.addSchemeLabel = function() {
-        var data = {'labels': {}};
-        data['labels'][$scope.newSchemeLabelLang] = $scope.newSchemeLabel;
+        // TODO implement
+        alert('implement');
+        /*
+        $scope.currentScheme['labels'].push({
+            'lang': $scope.schemeNewLabelLang,
+            'type': 'prefLabel',
+            'literal': $scope.newSchemeLabel
+        })
+        var data = {'labels': $scope.currentScheme['labels']};
 
         $http({
             method: 'PUT',
-            url: cfg.baseUrl + '/schemes/' + $scope.scheme,
+            url: cfg.baseUrl + '/schemes/' + $scope.schemeId,
             data: data
         }).success(function(data, status, headers, config) {
             $scope.newSchemeLabel = '';
             $rootScope.loadSchemes();
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
-        });
+        });*/
     }
 
     // Добавление схемы в иерархию
     $scope.addHierarhy = function () {
         $http({
             method: 'PUT',
-            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/parent/' + $scope.newHierarhyPreifix
+            url: cfg.baseUrl + '/schemes/' + $scope.schemeId + '/parent/' + $scope.newHierarhyPreifix
         }).success(function(data, status, headers, config) {
             $rootScope.loadSchemes();
         }).error(function(data, status, headers, config) {
@@ -56,7 +77,7 @@ app.controller('schemeController', function($scope, $rootScope, $http, $routePar
     $scope.delHierarhy = function(name) {
         $http({
             method: 'DELETE',
-            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/parent/' + name
+            url: cfg.baseUrl + '/schemes/' + $scope.schemeId + '/parent/' + name
         }).success(function(data, status, headers, config) {
             $rootScope.loadSchemes();
         }).error(function(data, status, headers, config) {
@@ -69,7 +90,7 @@ app.controller('schemeController', function($scope, $rootScope, $http, $routePar
         if (confirm("Are you sure wan to delete this scheme?") == true) {
             $http({
                 method: 'DELETE',
-                url: cfg.baseUrl + '/schemes/' + $scope.scheme
+                url: cfg.baseUrl + '/schemes/' + $scope.schemeId
             }).success(function(data, status, headers, config) {
                 $rootScope.loadSchemes();
                 $location.path('');
@@ -84,7 +105,7 @@ app.controller('schemeController', function($scope, $rootScope, $http, $routePar
         $http({
             method: 'GET',
             data: $rootScope.thesaurus,
-            url: cfg.baseUrl + '/schemes/' + $scope.scheme + '/concepts/top'
+            url: cfg.baseUrl + '/schemes/' + $scope.schemeId + '/concepts/top'
         }).success(function(data, status, headers, config) {
             $scope.topConcepts = data['concepts'];
         }).error(function(data, status, headers, config) {
@@ -94,46 +115,5 @@ app.controller('schemeController', function($scope, $rootScope, $http, $routePar
 
     $scope.getTopConcepts();
 
-    // $scope.resetThesaururs = function() {
-    //     var thesauruses = $rootScope.thesauruses;
-    //     var name = $rootScope.openedThesaurus;
-    //     $rootScope.thesaurus['name'] = thesauruses[name]['name'];
-    //     $rootScope.thesaurus['title'] = thesauruses[name]['title'];
-    // };
-
-
-    // $scope.reload = function () {
-    //     $http({
-    //         url: cfg.baseUrl + '/thesauruses/'
-    //     }).success(function(data, status, headers, config) {
-    //         $rootScope.thesauruses = data;
-    //         $rootScope.parents = $rootScope.thesauruses[$rootScope.openedThesaurus]['parents'];
-    //         $scope.resetThesaururs();
-    //     }).error(function(data, status, headers, config) {
-    //         console.log(status + headers);
-    //     });
-    // }
-
-    // $scope.submitThesaurus = function() {
-    //     $http({
-    //         method: 'PUT',
-    //         data: $rootScope.thesaurus,
-    //         url: cfg.baseUrl + '/thesaurus/' + $rootScope.openedThesaurus
-    //     }).success(function(data, status, headers, config) {
-    //         $rootScope.openedThesaurus = $rootScope.thesaurus['name'];
-    //         $rootScope.thesauruses[$rootScope.openedThesaurus] = $rootScope.thesaurus;
-    //         $location.path('/thesaurus/' + $rootScope.openedThesaurus);
-    //     }).error(function(data, status, headers, config) {
-    //         console.log(status + headers);
-    //     });
-    // }
-
-    // $rootScope.openedThesaurus = $routeParams['name']
-
-    // $scope.reload();
-    // $scope.getTopTerms();
-
-    // // new
-    // console.log('load');
 
 });

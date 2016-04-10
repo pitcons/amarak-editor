@@ -11,9 +11,16 @@
       <form class="form-horizontal">
         <div class="box-body">
 
+          <ajax-input label="'{{ _('Id') }}'"
+          value="currentScheme.id"
+          url="cfg.baseUrl + '/schemes/' + schemeId"
+          method="PUT"
+          key="id"
+          /></ajax-input>
+
           <ajax-input label="'{{ _('Name') }}'"
-          value="schemes[scheme].name"
-          url="cfg.baseUrl + '/schemes/' + scheme"
+          value="currentScheme.name"
+          url="cfg.baseUrl + '/schemes/' + schemeId"
           method="PUT"
           key="name"
           /></ajax-input>
@@ -32,9 +39,9 @@
                   <th>{{ _('Label') }}</th>
                   <th></th>
                 </tr>
-                <tr data-ng-repeat="(lang, label) in schemes[scheme].labels">
-                  <td> {{ '{{ lang }}' }} </td>
-                  <td> {{ '{{ label }}' }} </td>
+                <tr data-ng-repeat="label in currentScheme.labels">
+                  <td> {{ '{{ label.lang }}' }} </td>
+                  <td> {{ '{{ label.literal }}' }} </td>
                   <td>
                     <!-- <a href="#" onclick="return false;"> -->
                     <!--   <span class="glyphicon glyphicon-trash pull-right"></span> -->
@@ -43,11 +50,11 @@
                 </tr>
                 <tr>
                   <td>
-                    <select class="form-control" ng-model="newSchemeLabelLang" >
-                      <option data-ng-repeat="(lang, desc) in schemes[scheme].langs" value="{{ '{{ lang }}' }}">{{ '{{ lang }}' }}</option>
+                    <select class="form-control" ng-model="schemeNewLabelLang" ng-init="schemeNewLabelLang = firstOfHash(currentScheme.langs)">
+                      <option data-ng-repeat="(lang, desc) in currentScheme.langs" value="{{ '{{ lang }}' }}">{{ '{{ lang }}' }}</option>
                     </select>
                   </td>
-                  <td> <input ng-enter="addSchemeLabel()" class="form-control" ng-model="newSchemeLabel" /> </td>
+                  <td><input ng-enter="addSchemeLabel()" class="form-control" ng-model="newSchemeLabel" /> </td>
                   <td><button ng-click="addSchemeLabel()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
                 </tr>
 
@@ -74,14 +81,14 @@
         <div class="box-body">
 
           <ajax-input label="'{{ _('prefix') }}'"
-          value="schemes[scheme].ns_prefix"
-          url="cfg.baseUrl + '/schemes/' + scheme"
+          value="currentScheme.ns_prefix"
+          url="cfg.baseUrl + '/schemes/' + schemeId"
           method="PUT"
           key="ns_prefix"/></ajax-input>
 
           <ajax-input label="'{{ _('URL') }}'"
-          value="schemes[scheme].ns_url"
-          url="cfg.baseUrl + '/schemes/' + scheme"
+          value="currentScheme.ns_url"
+          url="cfg.baseUrl + '/schemes/' + schemeId"
           method="PUT"
           key="ns_url"/></ajax-input>
 
@@ -105,13 +112,12 @@
 
           <table class="table table-striped">
             <tbody><tr>
-              <th>{{ _('Url') }}</th>
+              <th>{{ _('Name') }}</th>
               <th></th>
             </tr>
 
-            <tr data-ng-repeat="p in schemes[scheme].parents">
+            <tr data-ng-repeat="p in currentScheme.parents">
               <td> {{ '{{ p }}' }} </td>
-              <td></td>
               <td>
                 <a href="#" onclick="return false" ng-click="delHierarhy(p)" >
                   <span class="glyphicon glyphicon-trash pull-right"></span>
@@ -122,7 +128,7 @@
             <tr>
               <td>
                 <select class="form-control" ng-model="newHierarhyPreifix">
-                  <option data-ng-repeat="sh in schemes" value="{{ '{{ sh.name }}' }}">{{ '{{ sh.uri }}' }}</option>
+                  <option data-ng-repeat="sh in schemes" value="{{ '{{ sh.name }}' }}">{{ '{{ sh.name }}' }}</option>
                 </select>
               </td>
               <td><button ng-click="addHierarhy()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
@@ -166,7 +172,7 @@
         <h3 class="box-title">{{ _('Concepts') }}</h3>
       </div>
       <div class="box-body">
-        <button ng-click="newConcept(scheme)" class="btn btn-def-sz btn-primary pull-right">{{ _('Add concept') }}</button>
+        <button ng-click="addConcept()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add concept') }}</button>
       </div>
     </div>
     <!-- /concepts -->
@@ -174,6 +180,8 @@
 
 </div>
 {# {% include 'edit_block/scheme_relations.html'%} #}
+
+
 <div class="row">
   <div class="col-xs-12 top-terms">
     <div class="box">
@@ -195,8 +203,8 @@
                 <th>{{ _('Scheme') }}</th>
               </tr>
             <tr data-ng-repeat="concept in topConcepts track by $index">
-              <td><a href="#/schemes/{{ '{{ concept.scheme }}'}}/concepts/{{ '{{ concept.name }}'}}">{{ '{{ concept.name }}' }}</a></td>
-              <td><a href="#/schemes/{{ '{{ concept.scheme }}'}}">{{ '{{ concept.scheme }}' }}</a></td>
+              <td><a href="{{ '{{ reverse("scheme.concept", {"schemeId": schemeId, "conceptName": concept.name}) }}' }}">{{ '{{ concept.name }}' }}</a></td>
+              <td><a href="{{ '{{ reverse("scheme", {"id": schemeId}) }}' }}">{{ '{{ concept.scheme }}' }}</a></td>
             </tr>
           </tbody></table>
         </div><!-- /.box-body -->
