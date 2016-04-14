@@ -26,17 +26,6 @@ app.run(function($rootScope, $window, $http, $q, $timeout, $location, cfg, rever
     return scheme.labels[$rootScope.lang] || scheme.id;
   }
 
-  $rootScope.loadConcept = function (scheme, concept) {
-    $http({
-      url: cfg.baseUrl + '/schemes/' + scheme + '/concepts/' + concept,
-      data: {'flat_labels': 'True'}
-    }).success(function(data, status, headers, config) {
-      $rootScope.concept = data;
-    }).error(function(data, status, headers, config) {
-      console.log(status + headers);
-    });
-  }
-
   $rootScope.newScheme = function() {
     var newName = 'new-' + Math.floor((Math.random() * 10000) + 1);
     $http({

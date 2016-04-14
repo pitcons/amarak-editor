@@ -1,20 +1,30 @@
-<div class="form-group">
-  <label class="col-sm-2 control-label">{{ label }}</label>
-  <div class="col-sm-10">
+<div ng-class="{'form-group': label}">
 
-    <div class="wrap input-group-sm">
-      <input type="text" class="form-control"
-             ng-enter="send()"
-             ng-model="currentValue"
-             />
-      <span class="input-group-btn ng-hide is-buttons">
+  <label ng-if="label" class="col-sm-2 control-label">{{ label }}</label>
+  <div ng-class="{'col-sm-10': label}">
 
-        <button class="btn btn-info btn-flat ng-hide disabled is-refresh" type="button"><span class="fa fa-refresh fa-spin"></span></button>
+    <div ng-if="!data.isEditMode">
+      <a href ng-click="toggleEditMode()" >{{ data.currentValue }}</a>
+    </div>
+    <div ng-if="data.isEditMode">
 
-        <button ng-click="send()" class="btn btn-info btn-flat is-update" type="button"><span class="fa fa-check"></span></button>
-        <button ng-click="currentValue = value" class="btn btn-info btn-flat is-reset" type="button"><span class="fa fa-close"></span></button>
+      <div class="wrap input-group-sm">
+        <input type="text" class="form-control"
+        ng-blur="toggleEditMode(true)"
+        ng-enter="send()"
+        ng-model="data.currentValue"
+        />
+        <span class="input-group-btn ng-hide is-buttons">
 
-      </span>
+          <button class="btn btn-info btn-flat ng-hide disabled is-refresh" type="button"><span class="fa fa-refresh fa-spin"></span></button>
+
+          <button ng-click="send()" class="btn btn-info btn-flat is-update" type="button"><span class="fa fa-check"></span></button>
+          <button ng-click="currentValue = value" class="btn btn-info btn-flat is-reset" type="button"><span class="fa fa-close"></span></button>
+
+        </span>
+      </div>
     </div>
   </div>
+
+
 </div>

@@ -13,6 +13,18 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
         'literal': ''
     }
 
+    $rootScope.loadConcept = function (scheme, concept) {
+        $http({
+            url: cfg.baseUrl + '/schemes/' + scheme + '/concepts/' + concept,
+            data: {'flat_labels': 'True'}
+        }).success(function(data, status, headers, config) {
+            $rootScope.concept = data;
+        }).error(function(data, status, headers, config) {
+            console.log(status + headers);
+        });
+    }
+
+
     $scope.getConcepts = function(scheme, uri) {
         return $http.get(cfg.baseUrl + '/schemes/' + scheme + '/search/name/' + uri + '?limit=20')
             .then(function(response){
@@ -54,7 +66,6 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
         }).error(function(data, status, headers, config) {
             console.log(status + headers);
         });
-
     }
 
 

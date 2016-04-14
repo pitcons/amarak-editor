@@ -1,15 +1,41 @@
 app.directive('ajaxInput', function($http, $timeout) {
     function link(scope, element, attrs) {
+
+        if (scope.autoEdit == undefined) {
+            scope.autoEdit = true;
+        }
+
+        scope.data = {
+            origValue: undefined,
+            currentValue: undefined,
+            isEditMode: scope.autoEdit
+        }
+
+        scope.toggleEditMode = function(isBlur) {
+
+            if (scope.data.isEditMode) {
+                if (!isBlur || scope.data.currentValue === scope.data.origValue) {
+                    scope.data.isEditMode = scope.autoEdit;
+                }
+            } else {
+                scope.data.isEditMode = true;
+                var el = $(element);
+                $timeout(function() {
+                    el.find('input').focus();
+                });
+            }
+        }
+
         scope.$watch('value', function(value){
             if(value){
-                scope.origValue = value;
-                scope.currentValue = value;
+                scope.data.origValue = value;
+                scope.data.currentValue = value;
             }
         });
 
-        scope.$watch('currentValue', function() {
+        scope.$watch('data.currentValue', function() {
             var el = $(element);
-            if (scope.currentValue === scope.origValue) {
+            if (scope.data.currentValue === scope.data.origValue) {
                 el.find('.is-buttons').addClass('ng-hide');
                 el.find('.wrap').removeClass('input-group');
             } else {
@@ -22,9 +48,9 @@ app.directive('ajaxInput', function($http, $timeout) {
         });
 
         scope.send = function() {
-            if (scope.currentValue !== scope.origValue) {
+            if (scope.data.currentValue !== scope.data.origValue) {
                 var data = {};
-                data[scope.key] = scope.currentValue;
+                data[scope.key] = scope.data.currentValue;
 
                 $http({
                     method: scope.method,
@@ -40,7 +66,8 @@ app.directive('ajaxInput', function($http, $timeout) {
                         $(element).find('.wrap').removeClass('input-group');
                     }, 1000); // TODO place for optimization ;)
 
-                    scope.value = scope.currentValue;
+                    scope.value = scope.data.currentValue;
+                    scope.toggleEditMode();
                 }).error(function(data, status, headers, config) {
                     console.log(scope.url + ' returned status ' + status);
                 });
@@ -58,6 +85,7 @@ app.directive('ajaxInput', function($http, $timeout) {
             key: '@',
             label: '=',
             value: '=?',
+            autoEdit: '=?'
         },
         replace: true,
         templateUrl: "/static/templates/ajax_input.html"

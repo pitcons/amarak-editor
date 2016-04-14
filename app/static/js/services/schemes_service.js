@@ -38,7 +38,24 @@ app.factory('schemesService', function(cfg, $http, $q) {
             });
 
             return deferred.promise;
+        },
+        relations: {
+            add: function(schemeId, relationName) {
+                var deferred = $q.defer();
 
+                $http({
+                    method: 'PUT',
+                    url: cfg.baseUrl + '/schemes/' + schemeId +
+                        '/relations/' + relationName
+                }).success(function(data, status, headers, config) {
+                    deferred.resolve();
+                }).error(function(data, status, headers, config) {
+                    console.log(status + headers);
+                    deferred.reject();
+                });
+
+                return deferred.promise;
+            }
         }
 
     }
