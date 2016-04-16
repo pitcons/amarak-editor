@@ -55,6 +55,22 @@ app.factory('schemesService', function(cfg, $http, $q) {
                 });
 
                 return deferred.promise;
+            },
+            remove: function(schemeId, relationName) {
+                var deferred = $q.defer();
+
+                $http({
+                    method: 'DELETE',
+                    url: cfg.baseUrl + '/schemes/' + schemeId +
+                        '/relations/' + relationName
+                }).success(function(data, status, headers, config) {
+                    deferred.resolve();
+                }).error(function(data, status, headers, config) {
+                    console.log(status + headers);
+                    deferred.reject();
+                });
+
+                return deferred.promise;
             }
         }
 

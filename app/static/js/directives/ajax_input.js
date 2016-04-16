@@ -74,6 +74,11 @@ app.directive('ajaxInput', function($http, $timeout) {
             }
         };
 
+        scope.reset = function() {
+            scope.data.currentValue = scope.value;
+            scope.toggleEditMode(true)
+        }
+
     };
 
     return {

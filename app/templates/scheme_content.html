@@ -27,7 +27,7 @@
 
           <div class="form-group">
             <div class="col-sm-12">
-              <button ng-click="delScheme()" class="btn btn-def-sz btn-danger pull-right">{{ _('Delete scheme') }}</button>
+              <button ng-click="delScheme()" class="btn btn-def-sz btn-sm btn-danger pull-right">{{ _('Delete scheme') }}</button>
             </div>
           </div>
 
@@ -49,13 +49,13 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td class="input-group-sm">
                     <select class="form-control" ng-model="schemeNewLabelLang" ng-init="schemeNewLabelLang = firstOfHash(currentScheme.langs)">
                       <option data-ng-repeat="(lang, desc) in currentScheme.langs" value="{{ '{{ lang }}' }}">{{ '{{ lang }}' }}</option>
                     </select>
                   </td>
-                  <td><input ng-enter="addSchemeLabel()" class="form-control" ng-model="newSchemeLabel" /> </td>
-                  <td><button ng-click="addSchemeLabel()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
+                  <td class="input-group-sm"><input ng-enter="addSchemeLabel()" class="form-control" ng-model="newSchemeLabel" /> </td>
+                  <td><button ng-click="addSchemeLabel()" class="btn btn-def-sz btn-sm btn-primary pull-right">{{ _('Add') }}</button></td>
                 </tr>
 
                 </tbody></table>
@@ -126,12 +126,12 @@
             </tr>
 
             <tr>
-              <td>
+              <td class="input-group-sm">
                 <select class="form-control" ng-model="newHierarhyPreifix">
                   <option data-ng-repeat="sh in schemes" value="{{ '{{ sh.name }}' }}">{{ '{{ sh.name }}' }}</option>
                 </select>
               </td>
-              <td><button ng-click="addHierarhy()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>
+              <td><button ng-click="addHierarhy()" class="btn btn-def-sz btn-sm btn-primary pull-right">{{ _('Add') }}</button></td>
             </tr>
             </tbody></table>
 
@@ -152,13 +152,13 @@
         <h3 class="box-title">{{ _('Export') }}</h3>
       </div>
       <div class="box-body">
-        <div class="col-sm-8">
+        <div class="col-sm-8 input-group-sm">
           <select class="form-control" ng-model="exportFormat">
             <option value="rdf">rdf/turtle</option>
           </select>
         </div>
         <div class="col-sm-4">
-          <button ng-click="exportScheme(scheme, exportFormat)" class="btn btn-def-sz btn-primary pull-right">{{ _('Export') }}</button>
+          <button ng-click="exportScheme(scheme, exportFormat)" class="btn btn-def-sz btn-sm btn-primary pull-right">{{ _('Export') }}</button>
         </div>
       </div>
     </div>
@@ -172,7 +172,7 @@
         <h3 class="box-title">{{ _('Concepts') }}</h3>
       </div>
       <div class="box-body">
-        <button ng-click="addConcept()" class="btn btn-def-sz btn-primary pull-right">{{ _('Add concept') }}</button>
+        <button ng-click="addConcept()" class="btn btn-def-sz btn-sm btn-primary pull-right">{{ _('Add concept') }}</button>
       </div>
     </div>
     <!-- /concepts -->

@@ -13,6 +13,10 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
         'literal': ''
     }
 
+    $scope.newLabelClick = function() {
+        $('#new-concept-label-btn').click();
+    }
+
     $rootScope.loadConcept = function (scheme, concept) {
         $http({
             url: cfg.baseUrl + '/schemes/' + scheme + '/concepts/' + concept,

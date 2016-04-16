@@ -12,6 +12,19 @@ var app = angular.module('amarakEditor', ['ui.bootstrap', 'ngRoute' ])
             });
         };
     })
+    .directive('ngEsc', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 27) {
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngEsc, {'event': event});
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    })
     .constant('cfg', {
         baseUrl: 'http://127.0.0.1:8000'
     })

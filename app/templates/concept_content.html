@@ -62,8 +62,9 @@
                     </select>
                   </td>
 
-                  <td> <input class="form-control" ng-model="newConceptLabel.literal" /> </td>
+                  <td> <input ng-enter="newLabelClick()" class="form-control" ng-model="newConceptLabel.literal" /> </td>
                   <td><button
+                    id="new-concept-label-btn"
                     btn-click="conceptsService.labels.add(schemeId, conceptName, newConceptLabel)"
                     btn-after="loadConcept(schemeId, conceptName)"
                     class="btn btn-def-sz btn-primary pull-right">{{ _('Add') }}</button></td>

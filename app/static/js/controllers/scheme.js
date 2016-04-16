@@ -10,7 +10,9 @@ app.controller('schemeController', function($scope, $rootScope, $http, $routePar
         $scope.schemesService.get($scope.schemeId).then(function(scheme){
             $scope.currentScheme = scheme;
         });
-
+    }
+    $scope.newRelationClick = function() {
+        $('#new-relation-btn').click();
     }
 
     $scope.$watch("currentScheme.id", function(newName, oldName) {

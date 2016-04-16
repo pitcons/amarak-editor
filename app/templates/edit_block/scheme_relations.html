@@ -11,6 +11,7 @@
             <tr>
               <th>{{ _('Name') }}</th>
               <th>{{ _('Scheme') }}</th>
+              <th></th>
             </tr>
             <tr data-ng-repeat="relation in currentScheme.relations">
               <td style="width: 80%">
@@ -22,16 +23,29 @@
                             key="name"
                             /></ajax-input>
               </td>
-              <td style="width: 20%">
+              <td style="width: 15%">
                 <a href="#/schemes/{{ '{{ relation.scheme }}'}}">{{ '{{ relation.scheme }}' }}</a>
+              </td>
+              <td style="width: 5%">
+                <a href="#" onclick="return false"
+                  btn-econfirm='"Are you sure want to delete relation \"" + relation.name + "\"?"'
+                  btn-click="schemesService.relations.remove(relation.scheme, relation.name)"
+                  btn-after="reloadScheme()">
+                  <span class="glyphicon glyphicon-trash pull-left"></span>
+                </a>
               </td>
             </tr>
             <tr>
-              <td style="width: 80%">
+              <td style="width: 80%" class="input-group-sm">
+                <input ng-enter="newRelationClick()" class="form-control" ng-model="currentScheme.newRelationName" />
+              </td>
+              <td>
                 <button
-                  btn-click="schemesService.relations.add(schemeId, 'new-name')"
+                  id="new-relation-btn"
+                  ng-disabled="!currentScheme.newRelationName"
+                  btn-click="schemesService.relations.add(schemeId, currentScheme.newRelationName)"
                   btn-after="reloadScheme()"
-                  class="btn btn-def-sz btn-primary pull-left">{{ _('Add') }}</button>
+                  class="btn btn-def-sz btn-sm btn-primary pull-left">{{ _('Add') }}</button>
               </td>
               <td>
               </td>
