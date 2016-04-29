@@ -96,7 +96,7 @@
             <div class="col-sm-10">
               <div id="wrapConceptUri" class="input-group-sm">
                 <select class="form-control ng-pristine ng-valid ng-touched" ng-model="newRelation.relation">
-                  <option ng-repeat="relation in schemes[scheme].relations">{{ '{{ relation }}' }}</option>
+                  <option ng-repeat="relation in schemes[scheme].relations">{{ '{{ relation.name }}' }} ({{ '{{ relation.scheme }}' }})</option>
                 </select>
               </div>
             </div>
@@ -108,7 +108,7 @@
 
               <div id="wrapConceptUri" class="input-group-sm">
                 <input type="text" ng-model="newRelation.concept"
-                uib-typeahead="c as c.scheme + ': ' + c.uri for c in getConcepts(scheme, $viewValue)"
+                uib-typeahead="c as c.name + ' (' + c.scheme + ')' for c in conceptsService.search(scheme, $viewValue, 20)"
                 typeahead-loading="loadingConcepts" typeahead-no-results="noResults" class="form-control" />
               </div>
             </div>

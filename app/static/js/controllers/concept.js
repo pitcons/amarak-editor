@@ -28,16 +28,6 @@ app.controller('conceptController', function($scope, $rootScope, $http, $routePa
         });
     }
 
-
-    $scope.getConcepts = function(scheme, uri) {
-        return $http.get(cfg.baseUrl + '/schemes/' + scheme + '/search/name/' + uri + '?limit=20')
-            .then(function(response){
-                return response.data['concepts'].map(function(item){
-                    return item;
-                });
-        });
-    };
-
     $scope.$watch("conceptName", function(newUri, oldUri){
         if (newUri != oldUri) {
             $location.path('/schemes/' + $scope.scheme + '/concepts/' + newUri + '/');

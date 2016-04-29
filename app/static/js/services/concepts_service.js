@@ -50,6 +50,26 @@ app.factory('conceptsService', function(cfg, $http, $q) {
 
       return deferred.promise;
     },
+    search: function(schemeId, name, limit) {
+      var deferred = $q.defer();
+      var result;
+
+      $http({
+        method: 'GET',
+        url: cfg.baseUrl + '/schemes/' + schemeId + '/search/name/' + name + '?limit=' + limit
+      }).success(function(data, status, headers, config) {
+        result = data['concepts'].map(function(item){
+          return item;
+        });
+        deferred.resolve(result);
+        return result;
+      }).error(function(data, status, headers, config) {
+        console.log(status + headers);
+        deferred.reject();
+      });
+
+      return deferred.promise;
+    },
     labels: {
       add: function(schemeId, conceptName, label) {
         var deferred = $q.defer();
